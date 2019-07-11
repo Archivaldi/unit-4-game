@@ -1,5 +1,7 @@
 body {
     background-image: url(../images/dart.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 .gameZone {
     width: 60%;
@@ -36,12 +38,19 @@ h1 {
     background-color: white;
     width: 100%;
 }
-.avatar {
-    border: 10px solid green;
-    padding: 0;
-    margin-right: 20px;
-    width: 175px;
-}
 p {
     margin: 0;
+}
+img {
+    width: 150px;
+    height: 200px;
+}
+
+.avatar {
+    background-color: white;
+    font-size: 20px;
+    color: red;
+    margin: 0;
+    width: 150px;
+    text-align: center;
 }
