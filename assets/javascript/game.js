@@ -5,7 +5,7 @@ var allCharacters = []; //array that stores all players
 var playerSelected = false;//shows if we picked up a character
 var defenderSelected = false;//shows if we picked up a defender
 var enemiesArray = [];
-var attacker;
+var atacker;
 var defender;
 
 //constructor for all characters
@@ -35,6 +35,7 @@ function characterCards(divID) {
             margin: "20px"
         });
         $(divID + " div:last-child").addClass("card");
+        $(divID + " div:last-child").attr("hp", allCharacters[i].healthPoints);
         $(divID + " div:last-child").append("<h5></h5>");
         $(divID + " div:last-child h5").addClass("avatar");
         $(divID + " div:last-child h5").text(allCharacters[i].name);
@@ -51,17 +52,33 @@ function characterCards(divID) {
 initCharacters();
 characterCards("#placeForChosingCharacter");
 
+//function that moves cards into atack and defend sections
 $(".card").click(function choseHero() {
     if ($(".yourCharacter").children().length <= 1) {
         $(".card").appendTo(".enemies");
+        $(".card").css("border-color", "red");
         $(this).appendTo(".yourCharacter");
         $(this).attr("data-value", "atacker");
+        $(this).css("border-color", "green");
+        atacker = $(this);
+        atackerHP = atacker.attr("hp");
+        console.log(atackerHP);
     } else if ($(".defender").children().length <= 1){
         $(this).appendTo(".defender");
         $(this).attr("data-value", "defender");
+        $(this).css("border-color", "black");
+        defender = $(this);
+        defenderHP = defender.attr("hp");
+        console.log(defenderHP);
     } else {
         console.log("Atacker and Defender are chosen");
     }
 });
+
+$("#atackButton").on("click", function(){
+    if (($(".yourCharacter").children().length <= 1) && ($(".defender").children().length <= 1)){ 
+
+    }
+})
 
 
