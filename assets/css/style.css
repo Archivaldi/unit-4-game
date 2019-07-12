@@ -54,3 +54,6 @@ img {
     width: 150px;
     text-align: center;
 }
+.card {
+    border: 10px solid green;
+}

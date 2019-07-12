@@ -51,44 +51,17 @@ function characterCards(divID) {
 initCharacters();
 characterCards("#placeForChosingCharacter");
 
-// this function will load all the characters into the character section to be selected
-var initializeGame = function() {
-    // Loop through the characters object and call the renderCharacter function on each character to render their card.
-    for (var key in allCharacters) {
-      Character(allCharacters[key], ".card");
-        console.log("clicked works");
+$(".card").click(function choseHero() {
+    if ($(".yourCharacter").children().length <= 1) {
+        $(".card").appendTo(".enemies");
+        $(this).appendTo(".yourCharacter");
+        $(this).attr("data-value", "atacker");
+    } else if ($(".defender").children().length <= 1){
+        $(this).appendTo(".defender");
+        $(this).attr("data-value", "defender");
+    } else {
+        console.log("Atacker and Defender are chosen");
     }
-  };
+});
 
-  initializeGame();
 
-  function renderEnemies(enemiesArray) {
-        for(var i = 0; i < enemiesArray.length; i++) {
-            initCharacters(enemiesArray[i],".enemies");
-        }
-  }
-
-  // On click event for selecting our character.
- $(".yourCharacter").on("click", ".card" , function() {
-    // Saving the clicked character's name.
-    // var name = $(this).attr("data-name");
- 
-    // If a player character has not yet been chosen...
-    if (!attacker) {
-      // We populate attacker with the selected character's information.
-      attacker = Character.name;
-      // We then loop through the remaining characters and push them to the combatants array.
-      for (var key in Characters) {
-        if (key !== name) {
-          enemiesArray.push(Characters[key]);
-        }
-      }
- 
-      // Hide the character select div.
-      $(".avatar").hide();
- 
-      // Then render our selected character and our combatants.
-      updateCharacter(attacker);
-      renderEnemies(enemiesArray);
-    }
-  });
