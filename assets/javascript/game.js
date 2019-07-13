@@ -4,9 +4,13 @@ var defender;       //takes defender object
 var allCharacters = []; //array that stores all players
 var playerSelected = false;//shows if we picked up a character
 var defenderSelected = false;//shows if we picked up a defender
-var enemiesArray = [];
 var attacker;
 var defender;
+
+var audioTheme = new Audio('assets/audio/theme.mp3');
+var audioHit = new Audio("assets/audio/hit.mp3");
+
+//play theme audio
 
 //constructor for all characters
 function Character(name, hp, ap, counter, pic) {
@@ -19,10 +23,10 @@ function Character(name, hp, ap, counter, pic) {
 
 // Initialize all the characters
 function initCharacters() {
-    var luke = new Character("Luke Skywalker", 100, 10, 5, "assets/images/lukeSkywalker.jpg");
-    var vader = new Character("Darth Vader", 200, 50, 20, "assets/images/darthVader.jpg");
-    var kylo = new Character("Kylo Ren", 150, 15, 7, "assets/images/kyloRen.jpg");
-    var yoda = new Character("Master Yoda", 180, 30, 12, "assets/images/masterYoda.jpg");
+    var luke = new Character("Luke Skywalker", 100, 5, 5, "assets/images/lukeSkywalker.jpg");
+    var vader = new Character("Darth Vader", 180, 17, 17, "assets/images/darthVader.jpg");
+    var kylo = new Character("Kylo Ren", 120, 8, 8, "assets/images/kyloRen.jpg");
+    var yoda = new Character("Master Yoda", 150, 12, 12, "assets/images/masterYoda.jpg");
     allCharacters.push(luke, vader, kylo, yoda);
 }
 
@@ -37,7 +41,7 @@ function characterCards(divID) {
         $(divID + " div:last-child").addClass("card");
         $(divID + " div:last-child").attr("hp", allCharacters[i].healthPoints);
         $(divID + " div:last-child").attr("ap", allCharacters[i].attackPower);
-        $(divID + " div:last-child").attr("passiveAp", allCharacters[i].counterAttackPower);
+        $(divID + " div:last-child").attr("counter", allCharacters[i].counterAttackPower);
         $(divID + " div:last-child").append("<h5></h5>");
         $(divID + " div:last-child h5").addClass("avatar");
         $(divID + " div:last-child h5").text(allCharacters[i].name);
@@ -65,14 +69,16 @@ $(".card").click(function choseHero() {
         attacker = $(this);
         attackerHP = parseInt(attacker.attr("hp"));
         attackerAP = parseInt(attacker.attr("ap"));
-    } else if ($(".defender").children().length <= 1){
+        attackerCounter = parseInt(attacker.attr("counter"));
+        audioTheme.play();
+    } else if ($(".defender").children().length <= 1) {
         $(".fightSection").text("");
         $(this).appendTo(".defender");
         $(this).attr("data-value", "defender");
         $(this).css("border-color", "black");
         defender = $(this);
         defenderHP = parseInt(defender.attr("hp"));
-        defenderAP = parseInt(defender.attr("passiveAp"));
+        defenderAP = parseInt(defender.attr("ap"));
     } else {
         console.log("Atacker and Defender are chosen");
     }
@@ -81,8 +87,8 @@ $(".card").click(function choseHero() {
 //win function
 function winnig() {
     if (defenderHP <= 0) {
+        $(".fightSection").text("You have defeted " + $(".defender h5.avatar").text() + ", you can chose another enemy.");
         $(".defender .card").remove();
-        $(".fightSection").text("Please chose another enemy!");
         gameWin();
     }
 }
@@ -93,19 +99,29 @@ function losing() {
         $(attacker).remove();
         $("#attackButton").text("Restart");
         $("#attackButton").attr("id", "restartButton");
-        $("#restartButton").on("click", function(){
+        $("#restartButton").on("click", function () {
             document.location.reload();
         })
         $(".fightSection").text("You Lost! Please try again!")
-    } 
+    }
 }
 
+//dunction for enemy attack 
+function enemyHit() {
+    if (defenderHP > 0){
+        attackerHP -= defenderAP;
+        $(".fightSection").append("<p>");
+        $(".fightSection p:last-child").attr("id", "defendInfo");
+        $("#defendInfo").text($(".defender h5.avatar").text() + " attacked " + $(".yourCharacter h5.avatar").text() + " for " + defenderAP + " damages");
+        $(".yourCharacter p.avatar").text("HP: " + attackerHP);
+    }
+}
 //check if we are already saved the Galaxy
 function gameWin() {
-    if (($(".enemies").children().length == 1) && ($(".defender").children().length == 1)){
+    if (($(".enemies").children().length == 1) && ($(".defender").children().length == 1)) {
         $("#attackButton").text("Restart");
         $("#attackButton").attr("id", "restartButton");
-        $("#restartButton").on("click", function(){
+        $("#restartButton").on("click", function () {
             document.location.reload();
         })
         $(".fightSection").text("You saved the Galaxy!!!");
@@ -116,19 +132,16 @@ function gameWin() {
     }
 }
 //function fir fighting
-$("#attackButton").on("click", function(){
-    if (($(".yourCharacter").children().length > 1) && ($(".defender").children().length > 1)){ 
+$("#attackButton").on("click", function () {
+    if (($(".yourCharacter").children().length > 1) && ($(".defender").children().length > 1)) {
         defenderHP -= attackerAP;
         $(".defender p.avatar").text("HP: " + defenderHP);
         $(".fightSection").append("<p>")
         $(".fightSection p:last-child").attr("id", "attackInfo");
         $("#attackInfo").text("You attacked " + $(".defender h5.avatar").text() + " for " + attackerAP + " damages");
-        attackerAP += attackerAP;
-        attackerHP -= defenderAP;
-        $(".fightSection").append("<p>");
-        $(".fightSection p:last-child").attr("id", "defendInfo");
-        $("#defendInfo").text($(".defender h5.avatar").text() + " attacked " + $(".yourCharacter h5.avatar").text() + " for " + defenderAP + " damages");
-        $(".yourCharacter p.avatar").text("HP: " + attackerHP);
+        attackerAP += attackerCounter;
+        audioHit.play();
+        enemyHit();
         winnig();
         losing();
         gameWin();
