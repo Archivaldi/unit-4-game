@@ -72,6 +72,15 @@ $(".card").click(function choseHero() {
         attackerAP = parseInt(attacker.attr("ap"));
         baseAttack = parseInt(attacker.attr("bap"));
         audioTheme.play();
+            if ($(attacker).find("h5").text() === "Luke Skywalker") {
+                $("body").css("background-image", "url(assets/images/LukeBody.jpg)");
+            } else if ($(attacker).find("h5").text() === "Darth Vader") {
+                $("body").css("background-image", "url(assets/images/dart.jpg)");
+            } else if ($(attacker).find("h5").text() === "Kylo Ren") {
+                $("body").css("background-image", "url(assets/images/kyloBody.jpg)");
+            } else if ($(attacker).find("h5").text() === "Master Yoda") {
+                $("body").css("background-image", "url(assets/images/yodaBody.jpg)");
+            }
     } else if ($(".defender").children().length <= 1) {
         $(".fightSection").text("");
         $(this).appendTo(".defender");
