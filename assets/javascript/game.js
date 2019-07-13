@@ -61,10 +61,12 @@ characterCards("#placeForChosingCharacter");
 
 //function that moves cards into atack and defend sections
 $(".card").click(function choseHero() {
+    $(this).hide();
     if ($(".yourCharacter").children().length <= 1) {
         $(".card").appendTo(".enemies");
         $(".card").css("border-color", "red");
         $(this).appendTo(".yourCharacter");
+        $(this).show(1000);
         $(this).attr("data-value", "atacker");
         $(this).css("border-color", "green");
         attacker = $(this);
@@ -72,6 +74,8 @@ $(".card").click(function choseHero() {
         attackerAP = parseInt(attacker.attr("ap"));
         baseAttack = parseInt(attacker.attr("bap"));
         audioTheme.play();
+
+            //we change background image depends on chosen hero
             if ($(attacker).find("h5").text() === "Luke Skywalker") {
                 $("body").css("background-image", "url(assets/images/LukeBody.jpg)");
             } else if ($(attacker).find("h5").text() === "Darth Vader") {
@@ -81,7 +85,9 @@ $(".card").click(function choseHero() {
             } else if ($(attacker).find("h5").text() === "Master Yoda") {
                 $("body").css("background-image", "url(assets/images/yodaBody.jpg)");
             }
+
     } else if ($(".defender").children().length <= 1) {
+        $(this).show(1000);
         $(".fightSection").text("");
         $(this).appendTo(".defender");
         $(this).attr("data-value", "defender");
@@ -97,7 +103,7 @@ $(".card").click(function choseHero() {
 //win function
 function winnig() {
     if (defenderHP <= 0) {
-        $(".fightSection").text("You have defeted " + $(".defender h5.avatar").text() + ", you can chose another enemy.");
+        $(".fightSection").text("You have defeated " + $(".defender h5.avatar").text() + ", you can chose another enemy.");
         $(defender).remove();
         gameWin();
     }
@@ -133,6 +139,7 @@ function enemyHit() {
         $(".yourCharacter p.avatar").text("HP: " + attackerHP);
     }
 }
+
 //check if we are already saved the Galaxy
 function gameWin() {
     if (($(".enemies").children().length == 1) && ($(".defender").children().length == 1)) {
@@ -148,6 +155,7 @@ function gameWin() {
         });
     }
 }
+
 //function fir fighting
 $("#attackButton").on("click", function () {
     if (($(".yourCharacter").children().length > 1) && ($(".defender").children().length > 1)) {
