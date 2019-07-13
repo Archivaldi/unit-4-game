@@ -1,4 +1,4 @@
-var baseAtatck = 0; //original attack
+var baseAttack; //original attack
 var player;         //takes player object
 var defender;       //takes defender object
 var allCharacters = []; //array that stores all players
@@ -23,10 +23,10 @@ function Character(name, hp, ap, counter, pic) {
 
 // Initialize all the characters
 function initCharacters() {
-    var luke = new Character("Luke Skywalker", 100, 5, 5, "assets/images/lukeSkywalker.jpg");
-    var vader = new Character("Darth Vader", 180, 17, 17, "assets/images/darthVader.jpg");
-    var kylo = new Character("Kylo Ren", 120, 8, 8, "assets/images/kyloRen.jpg");
-    var yoda = new Character("Master Yoda", 150, 12, 12, "assets/images/masterYoda.jpg");
+    var luke = new Character("Luke Skywalker", 100, 6, 8, "assets/images/lukeSkywalker.jpg");
+    var vader = new Character("Darth Vader", 130, 2, 13, "assets/images/darthVader.jpg");
+    var kylo = new Character("Kylo Ren", 110, 4, 8, "assets/images/kyloRen.jpg");
+    var yoda = new Character("Master Yoda", 120, 3, 10, "assets/images/masterYoda.jpg");
     allCharacters.push(luke, vader, kylo, yoda);
 }
 
@@ -39,6 +39,7 @@ function characterCards(divID) {
             margin: "20px"
         });
         $(divID + " div:last-child").addClass("card");
+        $(divID + " div:last-child").attr("bAp", allCharacters[i].attackPower);
         $(divID + " div:last-child").attr("hp", allCharacters[i].healthPoints);
         $(divID + " div:last-child").attr("ap", allCharacters[i].attackPower);
         $(divID + " div:last-child").attr("counter", allCharacters[i].counterAttackPower);
@@ -69,7 +70,7 @@ $(".card").click(function choseHero() {
         attacker = $(this);
         attackerHP = parseInt(attacker.attr("hp"));
         attackerAP = parseInt(attacker.attr("ap"));
-        attackerCounter = parseInt(attacker.attr("counter"));
+        baseAttack = parseInt(attacker.attr("bap"));
         audioTheme.play();
     } else if ($(".defender").children().length <= 1) {
         $(".fightSection").text("");
@@ -78,7 +79,7 @@ $(".card").click(function choseHero() {
         $(this).css("border-color", "black");
         defender = $(this);
         defenderHP = parseInt(defender.attr("hp"));
-        defenderAP = parseInt(defender.attr("ap"));
+        defenderAP = parseInt(defender.attr("counter"));
     } else {
         console.log("Atacker and Defender are chosen");
     }
@@ -139,7 +140,7 @@ $("#attackButton").on("click", function () {
         $(".fightSection").append("<p>")
         $(".fightSection p:last-child").attr("id", "attackInfo");
         $("#attackInfo").text("You attacked " + $(".defender h5.avatar").text() + " for " + attackerAP + " damages");
-        attackerAP += attackerCounter;
+        attackerAP += baseAttack;
         audioHit.play();
         enemyHit();
         winnig();
