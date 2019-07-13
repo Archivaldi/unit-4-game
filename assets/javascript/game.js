@@ -61,7 +61,6 @@ characterCards("#placeForChosingCharacter");
 
 //function that moves cards into atack and defend sections
 $(".card").click(function choseHero() {
-    $(this).hide();
     if ($(".yourCharacter").children().length <= 1) {
         $(".card").appendTo(".enemies");
         $(".card").css("border-color", "red");
