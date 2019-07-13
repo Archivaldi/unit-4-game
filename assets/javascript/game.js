@@ -100,7 +100,7 @@ function losing() {
         $(attacker).remove();
         $("#attackButton").text("Restart");
         $("#attackButton").attr("id", "restartButton");
-        $(defender).hide();
+        $(defender).hide(3000);
         $("#restartButton").on("click", function () {
             document.location.reload();
         })
