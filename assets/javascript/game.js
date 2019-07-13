@@ -23,10 +23,10 @@ function Character(name, hp, ap, counter, pic) {
 
 // Initialize all the characters
 function initCharacters() {
-    var luke = new Character("Luke Skywalker", 100, 6, 8, "assets/images/lukeSkywalker.jpg");
-    var vader = new Character("Darth Vader", 130, 2, 13, "assets/images/darthVader.jpg");
-    var kylo = new Character("Kylo Ren", 110, 4, 8, "assets/images/kyloRen.jpg");
-    var yoda = new Character("Master Yoda", 120, 3, 10, "assets/images/masterYoda.jpg");
+    var luke = new Character("Luke Skywalker", 100, 10, 9, "assets/images/lukeSkywalker.jpg");
+    var vader = new Character("Darth Vader", 180, 2, 16, "assets/images/darthVader.jpg");
+    var kylo = new Character("Kylo Ren", 120, 4, 10, "assets/images/kyloRen.jpg");
+    var yoda = new Character("Master Yoda", 150, 3, 14, "assets/images/masterYoda.jpg");
     allCharacters.push(luke, vader, kylo, yoda);
 }
 
@@ -89,7 +89,7 @@ $(".card").click(function choseHero() {
 function winnig() {
     if (defenderHP <= 0) {
         $(".fightSection").text("You have defeted " + $(".defender h5.avatar").text() + ", you can chose another enemy.");
-        $(".defender .card").remove();
+        $(defender).remove();
         gameWin();
     }
 }
@@ -100,10 +100,17 @@ function losing() {
         $(attacker).remove();
         $("#attackButton").text("Restart");
         $("#attackButton").attr("id", "restartButton");
+        $(defender).hide();
         $("#restartButton").on("click", function () {
             document.location.reload();
         })
-        $(".fightSection").text("You Lost! Please try again!")
+        $(".fightSection").text("Game Over!");
+        $(".fightSection").css({
+            textAlign: "center",
+            fontSize: "70px",
+            border: "3px solid black",
+            width: "35%"
+        })
     }
 }
 
