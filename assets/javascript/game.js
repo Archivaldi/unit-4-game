@@ -5,7 +5,7 @@ var allCharacters = []; //array that stores all players
 var playerSelected = false;//shows if we picked up a character
 var defenderSelected = false;//shows if we picked up a defender
 var enemiesArray = [];
-var atacker;
+var attacker;
 var defender;
 
 //constructor for all characters
@@ -36,6 +36,7 @@ function characterCards(divID) {
         });
         $(divID + " div:last-child").addClass("card");
         $(divID + " div:last-child").attr("hp", allCharacters[i].healthPoints);
+        $(divID + " div:last-child").attr("ap", allCharacters[i].attackPower);
         $(divID + " div:last-child").append("<h5></h5>");
         $(divID + " div:last-child h5").addClass("avatar");
         $(divID + " div:last-child h5").text(allCharacters[i].name);
@@ -60,25 +61,59 @@ $(".card").click(function choseHero() {
         $(this).appendTo(".yourCharacter");
         $(this).attr("data-value", "atacker");
         $(this).css("border-color", "green");
-        atacker = $(this);
-        atackerHP = atacker.attr("hp");
-        console.log(atackerHP);
+        attacker = $(this);
+        attackerHP = parseInt(attacker.attr("hp"));
+        attackerAP = parseInt(attacker.attr("ap"));
     } else if ($(".defender").children().length <= 1){
+        $(".fightSection").text("");
         $(this).appendTo(".defender");
         $(this).attr("data-value", "defender");
         $(this).css("border-color", "black");
         defender = $(this);
-        defenderHP = defender.attr("hp");
-        console.log(defenderHP);
+        defenderHP = parseInt(defender.attr("hp"));
+        defenderAP = parseInt(defender.attr("ap"));
     } else {
         console.log("Atacker and Defender are chosen");
     }
 });
 
-$("#atackButton").on("click", function(){
-    if (($(".yourCharacter").children().length <= 1) && ($(".defender").children().length <= 1)){ 
+//win function
+function winnig() {
+    if (defenderHP <= 0) {
+        $(".defender .card").remove();
+        $(".fightSection").text("Please chose another enemy!");
+        gameWin();
+    }
+}
 
+//lose function
+function losing() {
+    if (attackerHP <= 0) {
+        $(attacker).remove();
+        $("#attackButton").text("Restart");
+        $("#attackButton").attr("id", "restartButton");
+        $("#restartButton").on("click", function(){
+            document.location.reload();
+        })
+        $(".fightSection").text("You Lost! Please try again!")
+    } 
+}
+
+function gameWin() {
+    if (($(".enemies").children().length == 1) && ($(".defender").children().length == 1)){
+        $(".fightSection").text("You saved the Galaxy!!!");
+    }
+}
+//function fir fighting
+$("#attackButton").on("click", function(){
+    if (($(".yourCharacter").children().length > 1) && ($(".defender").children().length > 1)){ 
+        defenderHP -= attackerAP;
+        $(".defender p.avatar").text("HP: " + defenderHP);
+        attackerAP += attackerAP;
+        attackerHP -= defenderAP;
+        $(".yourCharacter p.avatar").text("HP: " + attackerHP);
+        winnig();
+        losing();
+        gameWin();
     }
 })
-
-
