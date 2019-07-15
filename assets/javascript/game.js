@@ -25,8 +25,8 @@ function Character(name, hp, ap, counter, pic) {
 function initCharacters() {
     var luke = new Character("Luke Skywalker", 100, 10, 9, "assets/images/lukeSkywalker.jpg");
     var vader = new Character("Darth Vader", 180, 2, 16, "assets/images/darthVader.jpg");
-    var kylo = new Character("Kylo Ren", 120, 4, 10, "assets/images/kyloRen.jpg");
-    var yoda = new Character("Master Yoda", 150, 3, 14, "assets/images/masterYoda.jpg");
+    var kylo = new Character("Kylo Ren", 120, 5, 10, "assets/images/kyloRen.jpg");
+    var yoda = new Character("Master Yoda", 150, 4, 14, "assets/images/masterYoda.jpg");
     allCharacters.push(luke, vader, kylo, yoda);
 }
 
@@ -71,7 +71,7 @@ $(".card").click(function choseHero() {
         attacker = $(this);
         attackerHP = parseInt(attacker.attr("hp"));
         attackerAP = parseInt(attacker.attr("ap"));
-        baseAttack = parseInt(attacker.attr("bap"));
+        baseAttack = parseInt(attacker.attr("bAp"));
         audioTheme.play();
 
             //we change background image depends on chosen hero
@@ -160,7 +160,8 @@ $("#attackButton").on("click", function () {
     if (($(".yourCharacter").children().length > 1) && ($(".defender").children().length > 1)) {
         defenderHP -= attackerAP;
         $(".defender p.avatar").text("HP: " + defenderHP);
-        $(".fightSection").append("<p>")
+        $(".fightSection p").remove();
+        $(".fightSection").append("<p>");
         $(".fightSection p:last-child").attr("id", "attackInfo");
         $("#attackInfo").text("You attacked " + $(".defender h5.avatar").text() + " for " + attackerAP + " damages");
         attackerAP += baseAttack;
