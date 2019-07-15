@@ -59,10 +59,18 @@ function characterCards(divID) {
 initCharacters();
 characterCards("#placeForChosingCharacter");
 
+// $(".card").on("mouseenter", function() {
+//     $(this).css("border-color", "red");
+// });
+// $(".card").on("mouseleave", function() {
+//     $(this).css("border-color", "green");
+// });
+
 //function that moves cards into atack and defend sections
 $(".card").click(function choseHero() {
     if ($(".yourCharacter").children().length <= 1) {
-        $(".card").appendTo(".enemies");
+        $(this).hide();
+        $(".card").appendTo(".enemies"); 
         $(".card").css("border-color", "red");
         $(this).appendTo(".yourCharacter");
         $(this).show(1000);
@@ -86,11 +94,12 @@ $(".card").click(function choseHero() {
             }
 
     } else if ($(".defender").children().length <= 1) {
-        $(this).show(1000);
+        $(this).hide();
         $(".fightSection").text("");
         $(this).appendTo(".defender");
         $(this).attr("data-value", "defender");
         $(this).css("border-color", "black");
+        $(this).show(1000);
         defender = $(this);
         defenderHP = parseInt(defender.attr("hp"));
         defenderAP = parseInt(defender.attr("counter"));
@@ -114,7 +123,7 @@ function losing() {
         $(attacker).remove();
         $("#attackButton").text("Restart");
         $("#attackButton").attr("id", "restartButton");
-        $(defender).hide(3000);
+        $(".card").hide(3000);
         $("#restartButton").on("click", function () {
             document.location.reload();
         })
@@ -172,3 +181,4 @@ $("#attackButton").on("click", function () {
         gameWin();
     }
 })
+
