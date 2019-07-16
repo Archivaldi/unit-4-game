@@ -116,8 +116,10 @@ $(".card").click(function choseHero() {
 function winnig() {
     if (defenderHP <= 0) {
         $(".fightSection").text("You have defeated " + $(".defender h5.avatar").text() + ", you can chose another enemy.");
+        $(defender).fadeOut(300, function() {
             $(defender).remove();
-        gameWin();
+            gameWin();
+        });
     }
 }
 
