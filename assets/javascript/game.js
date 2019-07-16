@@ -66,16 +66,18 @@ characterCards("#placeForChosingCharacter");
 //     $(this).css("border-color", "green");
 // });
 
-//function that moves cards into atack and defend sections
+//function that moves cards into attack and defend sections
 $(".card").click(function choseHero() {
     if ($(".yourCharacter").children().length <= 1) {
-        $(this).hide();
-        $(".card").appendTo(".enemies"); 
-        $(".card").css("border-color", "red");
-        $(this).appendTo(".yourCharacter");
-        $(this).show(1000);
+        $(this).fadeOut(300, function() {
+            $(".card").appendTo(".enemies"); 
+            $(".card").css("border-color", "red");
+            $(this).appendTo(".yourCharacter");
+            // $(this).attr("class", "attack");
+            $(this).css("border-color", "green");
+            $(this).fadeIn();
+        });
         $(this).attr("data-value", "atacker");
-        $(this).css("border-color", "green");
         attacker = $(this);
         attackerHP = parseInt(attacker.attr("hp"));
         attackerAP = parseInt(attacker.attr("ap"));
@@ -94,12 +96,14 @@ $(".card").click(function choseHero() {
             }
 
     } else if ($(".defender").children().length <= 1) {
-        $(this).hide();
-        $(".fightSection").text("");
-        $(this).appendTo(".defender");
-        $(this).attr("data-value", "defender");
-        $(this).css("border-color", "black");
-        $(this).show(1000);
+        $(this).fadeOut(300, function() {
+            $(".fightSection").text("");
+            $(this).appendTo(".defender");
+            $(this).attr("data-value", "defender");
+            $(this).css("border-color", "black");
+            $(this).fadeIn();
+        });
+        // $(this).attr("class", "defend");
         defender = $(this);
         defenderHP = parseInt(defender.attr("hp"));
         defenderAP = parseInt(defender.attr("counter"));
@@ -112,7 +116,9 @@ $(".card").click(function choseHero() {
 function winnig() {
     if (defenderHP <= 0) {
         $(".fightSection").text("You have defeated " + $(".defender h5.avatar").text() + ", you can chose another enemy.");
-        $(defender).remove();
+        $(defender).fadeOut(300, function() {
+            $(defender).remove();
+        });
         gameWin();
     }
 }
@@ -120,10 +126,12 @@ function winnig() {
 //lose function
 function losing() {
     if (attackerHP <= 0) {
-        $(attacker).remove();
+        $(defender).fadeOut(300, function() {
+            $(attacker).remove();
+        });
         $("#attackButton").text("Restart");
         $("#attackButton").attr("id", "restartButton");
-        $(".card").hide(3000);
+        $(".card").fadeOut();
         $("#restartButton").on("click", function () {
             document.location.reload();
         })

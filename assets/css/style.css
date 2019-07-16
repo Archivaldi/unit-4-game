@@ -57,6 +57,13 @@ img {
 .card {
     border: 10px solid green;
 }
+.attack {
+    border: 10px solid green;
+}
+.defend {
+    border: 10px solid black;
+}
+
 
 #defendInfo, #attackInfo {
     font-size: 20px;
