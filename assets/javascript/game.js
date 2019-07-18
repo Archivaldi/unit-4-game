@@ -73,7 +73,8 @@ $(".card").click(function choseHero() {
             $(".card").appendTo(".enemies"); 
             $(".card").css("border-color", "red");
             $(this).appendTo(".yourCharacter");
-            // $(this).attr("class", "attack");
+            $(this).attr("class", "attack");
+            $(this).off("click");
             $(this).css("border-color", "green");
             $(this).fadeIn();
         });
